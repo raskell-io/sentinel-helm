@@ -1,0 +1,29 @@
+apiVersion: v2
+name: sentinel
+description: A high-performance, security-focused reverse proxy built on Cloudflare's Pingora
+
+type: application
+version: 0.1.0
+appVersion: "0.2.0"
+
+home: https://sentinel.raskell.io
+sources:
+  - https://github.com/raskell-io/sentinel
+  - https://github.com/raskell-io/sentinel-helm
+
+maintainers:
+  - name: Raskell
+    url: https://raskell.io
+
+keywords:
+  - proxy
+  - reverse-proxy
+  - load-balancer
+  - security
+  - waf
+  - api-gateway
+  - pingora
+
+annotations:
+  artifacthub.io/license: Apache-2.0
+  artifacthub.io/category: networking

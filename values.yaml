@@ -1,0 +1,200 @@
+# Sentinel Helm Chart Values
+# https://github.com/raskell-io/sentinel-helm
+
+# -- Number of replicas
+replicaCount: 1
+
+image:
+  # -- Image repository
+  repository: ghcr.io/raskell-io/sentinel
+  # -- Image pull policy
+  pullPolicy: IfNotPresent
+  # -- Image tag (defaults to appVersion)
+  tag: ""
+
+# -- Image pull secrets for private registries
+imagePullSecrets: []
+
+# -- Override the name of the chart
+nameOverride: ""
+# -- Override the full name of the chart
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Create a service account
+  create: true
+  # -- Annotations for the service account
+  annotations: {}
+  # -- Name of the service account (auto-generated if not set)
+  name: ""
+
+# -- Pod annotations
+podAnnotations: {}
+
+# -- Pod security context
+podSecurityContext:
+  fsGroup: 65534
+
+# -- Container security context
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65534
+  allowPrivilegeEscalation: false
+
+# Sentinel configuration
+config:
+  # -- Raw KDL configuration (alternative to configMap)
+  # If set, this will be used instead of an external ConfigMap
+  raw: ""
+  # -- Name of existing ConfigMap containing sentinel.kdl
+  existingConfigMap: ""
+  # -- Key in the ConfigMap containing the configuration
+  configKey: "sentinel.kdl"
+
+# -- Additional environment variables
+env: []
+#  - name: RUST_LOG
+#    value: "info"
+
+# -- Environment variables from secrets/configmaps
+envFrom: []
+#  - secretRef:
+#      name: sentinel-secrets
+
+service:
+  # -- Service type
+  type: ClusterIP
+  # -- HTTP port
+  httpPort: 80
+  # -- HTTPS port
+  httpsPort: 443
+  # -- Metrics port (Prometheus)
+  metricsPort: 9090
+  # -- Annotations for the service
+  annotations: {}
+  # -- Load balancer IP (if type is LoadBalancer)
+  loadBalancerIP: ""
+
+# Ingress configuration
+ingress:
+  # -- Enable ingress
+  enabled: false
+  # -- Ingress class name
+  className: ""
+  # -- Ingress annotations
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+  # -- Ingress hosts
+  hosts:
+    - host: sentinel.local
+      paths:
+        - path: /
+          pathType: Prefix
+  # -- TLS configuration
+  tls: []
+  #  - secretName: sentinel-tls
+  #    hosts:
+  #      - sentinel.local
+
+# Resource limits
+resources:
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# Horizontal Pod Autoscaler
+autoscaling:
+  # -- Enable HPA
+  enabled: false
+  # -- Minimum replicas
+  minReplicas: 2
+  # -- Maximum replicas
+  maxReplicas: 10
+  # -- Target CPU utilization percentage
+  targetCPUUtilizationPercentage: 80
+  # -- Target memory utilization percentage
+  targetMemoryUtilizationPercentage: 80
+
+# Pod Disruption Budget
+podDisruptionBudget:
+  # -- Enable PDB
+  enabled: false
+  # -- Minimum available pods
+  minAvailable: 1
+  # -- Maximum unavailable pods (alternative to minAvailable)
+  # maxUnavailable: 1
+
+# -- Node selector
+nodeSelector: {}
+
+# -- Tolerations
+tolerations: []
+
+# -- Affinity rules
+affinity: {}
+
+# -- Topology spread constraints
+topologySpreadConstraints: []
+
+# Prometheus ServiceMonitor
+serviceMonitor:
+  # -- Enable ServiceMonitor for Prometheus Operator
+  enabled: false
+  # -- Namespace for the ServiceMonitor (defaults to release namespace)
+  namespace: ""
+  # -- Labels for the ServiceMonitor
+  labels: {}
+  # -- Scrape interval
+  interval: 30s
+  # -- Scrape timeout
+  scrapeTimeout: 10s
+  # -- Metric relabelings
+  metricRelabelings: []
+  # -- Relabelings
+  relabelings: []
+
+# Liveness probe
+livenessProbe:
+  httpGet:
+    path: /health
+    port: metrics
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+# Readiness probe
+readinessProbe:
+  httpGet:
+    path: /health
+    port: metrics
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+# -- Extra volumes
+extraVolumes: []
+#  - name: tls-certs
+#    secret:
+#      secretName: sentinel-tls
+
+# -- Extra volume mounts
+extraVolumeMounts: []
+#  - name: tls-certs
+#    mountPath: /etc/sentinel/certs
+#    readOnly: true
+
+# -- Init containers
+initContainers: []
+
+# -- Sidecar containers
+sidecars: []

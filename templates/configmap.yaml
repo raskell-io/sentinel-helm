@@ -1,0 +1,37 @@
+{{- if not .Values.config.existingConfigMap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sentinel.fullname" . }}
+  labels:
+    {{- include "sentinel.labels" . | nindent 4 }}
+data:
+  {{ .Values.config.configKey }}: |
+    {{- if .Values.config.raw }}
+{{ .Values.config.raw | indent 4 }}
+    {{- else }}
+    // Default Sentinel configuration
+    // Replace this with your actual configuration
+    listeners {
+        listener "http" {
+            address "0.0.0.0:80"
+            protocol "http"
+        }
+    }
+
+    routes {
+        route "default" {
+            matches {
+                path-prefix "/"
+            }
+            upstream "backend"
+        }
+    }
+
+    upstreams {
+        upstream "backend" {
+            target "localhost:8080"
+        }
+    }
+    {{- end }}
+{{- end }}

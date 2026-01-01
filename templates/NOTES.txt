@@ -1,0 +1,32 @@
+Sentinel has been deployed!
+
+{{- if .Values.ingress.enabled }}
+Access Sentinel via your ingress:
+{{- range $host := .Values.ingress.hosts }}
+  {{- range .paths }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host.host }}{{ .path }}
+  {{- end }}
+{{- end }}
+{{- else if contains "NodePort" .Values.service.type }}
+Get the application URL by running:
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "sentinel.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+{{- else if contains "LoadBalancer" .Values.service.type }}
+Get the application URL by running:
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+  kubectl get --namespace {{ .Release.Namespace }} svc {{ include "sentinel.fullname" . }} -w
+{{- else if contains "ClusterIP" .Values.service.type }}
+Access Sentinel by running:
+  kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ include "sentinel.fullname" . }} 8080:{{ .Values.service.httpPort }}
+  echo "Visit http://127.0.0.1:8080"
+{{- end }}
+
+Metrics are available on port {{ .Values.service.metricsPort }}.
+{{- if .Values.serviceMonitor.enabled }}
+Prometheus ServiceMonitor is enabled - metrics will be scraped automatically.
+{{- else }}
+To enable Prometheus scraping, set serviceMonitor.enabled=true.
+{{- end }}
+
+For documentation, visit: https://sentinel.raskell.io/docs

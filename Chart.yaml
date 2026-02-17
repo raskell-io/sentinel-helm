@@ -1,15 +1,15 @@
 apiVersion: v2
-name: sentinel
+name: zentinel
 description: A high-performance, security-focused reverse proxy built on Cloudflare's Pingora
 
 type: application
 version: 0.1.0
 appVersion: "0.2.0"
 
-home: https://sentinel.raskell.io
+home: https://zentinelproxy.io
 sources:
-  - https://github.com/raskell-io/sentinel
-  - https://github.com/raskell-io/sentinel-helm
+  - https://github.com/zentinelproxy/zentinel
+  - https://github.com/zentinelproxy/zentinel-helm
 
 maintainers:
   - name: Raskell

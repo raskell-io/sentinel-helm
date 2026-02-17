@@ -1,27 +1,27 @@
-# Sentinel Helm Chart
+# Zentinel Helm Chart
 
-Helm chart for deploying [Sentinel](https://github.com/raskell-io/sentinel) - a high-performance, security-focused reverse proxy built on Cloudflare's Pingora.
+Helm chart for deploying [Zentinel](https://github.com/zentinelproxy/zentinel) - a high-performance, security-focused reverse proxy built on Cloudflare's Pingora.
 
 ## Quick Start
 
 ```bash
 # Add the repository (when published)
-helm repo add sentinel https://charts.sentinel.raskell.io
+helm repo add zentinel https://charts.zentinelproxy.io
 helm repo update
 
 # Install with default values
-helm install sentinel sentinel/sentinel
+helm install zentinel zentinel/zentinel
 
 # Install with custom configuration
-helm install sentinel sentinel/sentinel -f values.yaml
+helm install zentinel zentinel/zentinel -f values.yaml
 ```
 
 ## Installation from Source
 
 ```bash
-git clone https://github.com/raskell-io/sentinel-helm.git
-cd sentinel-helm
-helm install sentinel .
+git clone https://github.com/zentinelproxy/zentinel-helm.git
+cd zentinel-helm
+helm install zentinel .
 ```
 
 ## Configuration
@@ -61,8 +61,8 @@ config:
 
 ```yaml
 config:
-  existingConfigMap: my-sentinel-config
-  configKey: sentinel.kdl
+  existingConfigMap: my-zentinel-config
+  configKey: zentinel.kdl
 ```
 
 ### Enabling Autoscaling
@@ -109,7 +109,7 @@ ingress:
 | Parameter | Description | Default |
 |-----------|-------------|---------|
 | `replicaCount` | Number of replicas | `1` |
-| `image.repository` | Image repository | `ghcr.io/raskell-io/sentinel` |
+| `image.repository` | Image repository | `ghcr.io/zentinelproxy/zentinel` |
 | `image.tag` | Image tag | `""` (uses appVersion) |
 | `image.pullPolicy` | Image pull policy | `IfNotPresent` |
 
@@ -119,7 +119,7 @@ ingress:
 |-----------|-------------|---------|
 | `config.raw` | Raw KDL configuration | `""` |
 | `config.existingConfigMap` | Use existing ConfigMap | `""` |
-| `config.configKey` | Key in ConfigMap | `sentinel.kdl` |
+| `config.configKey` | Key in ConfigMap | `zentinel.kdl` |
 
 ### Service
 
@@ -164,11 +164,11 @@ Mount TLS certificates using `extraVolumes` and `extraVolumeMounts`:
 extraVolumes:
   - name: tls-certs
     secret:
-      secretName: sentinel-tls
+      secretName: zentinel-tls
 
 extraVolumeMounts:
   - name: tls-certs
-    mountPath: /etc/sentinel/certs
+    mountPath: /etc/zentinel/certs
     readOnly: true
 ```
 
@@ -182,8 +182,8 @@ config:
             address "0.0.0.0:443"
             protocol "https"
             tls {
-                cert "/etc/sentinel/certs/tls.crt"
-                key "/etc/sentinel/certs/tls.key"
+                cert "/etc/zentinel/certs/tls.crt"
+                key "/etc/zentinel/certs/tls.key"
             }
         }
     }
@@ -191,9 +191,9 @@ config:
 
 ## Related
 
-- [Sentinel](https://github.com/raskell-io/sentinel) - Main proxy repository
-- [Documentation](https://sentinel.raskell.io/docs) - Full documentation
-- [Sentinel Agent SDK](https://github.com/raskell-io/sentinel-agent-sdk) - Build custom agents
+- [Zentinel](https://github.com/zentinelproxy/zentinel) - Main proxy repository
+- [Documentation](https://zentinelproxy.io/docs) - Full documentation
+- [Zentinel Agent SDK](https://github.com/zentinelproxy/zentinel-agent-sdk) - Build custom agents
 
 ## License
 

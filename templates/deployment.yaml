@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "sentinel.fullname" . }}
+  name: {{ include "zentinel.fullname" . }}
   labels:
-    {{- include "sentinel.labels" . | nindent 4 }}
+    {{- include "zentinel.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "sentinel.selectorLabels" . | nindent 6 }}
+      {{- include "zentinel.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
@@ -19,13 +19,13 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        {{- include "sentinel.selectorLabels" . | nindent 8 }}
+        {{- include "zentinel.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "sentinel.serviceAccountName" . }}
+      serviceAccountName: {{ include "zentinel.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       {{- with .Values.initContainers }}
@@ -40,7 +40,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - --config
-            - /etc/sentinel/sentinel.kdl
+            - /etc/zentinel/zentinel.kdl
           ports:
             - name: http
               containerPort: 80
@@ -67,7 +67,7 @@ spec:
           {{- end }}
           volumeMounts:
             - name: config
-              mountPath: /etc/sentinel
+              mountPath: /etc/zentinel
               readOnly: true
             {{- with .Values.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
@@ -78,7 +78,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: {{ include "sentinel.configMapName" . }}
+            name: {{ include "zentinel.configMapName" . }}
         {{- with .Values.extraVolumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}

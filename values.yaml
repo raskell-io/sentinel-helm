@@ -1,12 +1,12 @@
-# Sentinel Helm Chart Values
-# https://github.com/raskell-io/sentinel-helm
+# Zentinel Helm Chart Values
+# https://github.com/zentinelproxy/zentinel-helm
 
 # -- Number of replicas
 replicaCount: 1
 
 image:
   # -- Image repository
-  repository: ghcr.io/raskell-io/sentinel
+  repository: ghcr.io/zentinelproxy/zentinel
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Image tag (defaults to appVersion)
@@ -45,15 +45,15 @@ securityContext:
   runAsUser: 65534
   allowPrivilegeEscalation: false
 
-# Sentinel configuration
+# Zentinel configuration
 config:
   # -- Raw KDL configuration (alternative to configMap)
   # If set, this will be used instead of an external ConfigMap
   raw: ""
-  # -- Name of existing ConfigMap containing sentinel.kdl
+  # -- Name of existing ConfigMap containing zentinel.kdl
   existingConfigMap: ""
   # -- Key in the ConfigMap containing the configuration
-  configKey: "sentinel.kdl"
+  configKey: "zentinel.kdl"
 
 # -- Additional environment variables
 env: []
@@ -63,7 +63,7 @@ env: []
 # -- Environment variables from secrets/configmaps
 envFrom: []
 #  - secretRef:
-#      name: sentinel-secrets
+#      name: zentinel-secrets
 
 service:
   # -- Service type
@@ -91,15 +91,15 @@ ingress:
     # cert-manager.io/cluster-issuer: letsencrypt-prod
   # -- Ingress hosts
   hosts:
-    - host: sentinel.local
+    - host: zentinel.local
       paths:
         - path: /
           pathType: Prefix
   # -- TLS configuration
   tls: []
-  #  - secretName: sentinel-tls
+  #  - secretName: zentinel-tls
   #    hosts:
-  #      - sentinel.local
+  #      - zentinel.local
 
 # Resource limits
 resources:
@@ -185,12 +185,12 @@ readinessProbe:
 extraVolumes: []
 #  - name: tls-certs
 #    secret:
-#      secretName: sentinel-tls
+#      secretName: zentinel-tls
 
 # -- Extra volume mounts
 extraVolumeMounts: []
 #  - name: tls-certs
-#    mountPath: /etc/sentinel/certs
+#    mountPath: /etc/zentinel/certs
 #    readOnly: true
 
 # -- Init containers

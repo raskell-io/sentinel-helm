@@ -1,14 +1,14 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "sentinel.name" -}}
+{{- define "zentinel.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Create a default fully qualified app name.
 */}}
-{{- define "sentinel.fullname" -}}
+{{- define "zentinel.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -24,16 +24,16 @@ Create a default fully qualified app name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "sentinel.chart" -}}
+{{- define "zentinel.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "sentinel.labels" -}}
-helm.sh/chart: {{ include "sentinel.chart" . }}
-{{ include "sentinel.selectorLabels" . }}
+{{- define "zentinel.labels" -}}
+helm.sh/chart: {{ include "zentinel.chart" . }}
+{{ include "zentinel.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -43,17 +43,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "sentinel.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "sentinel.name" . }}
+{{- define "zentinel.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "zentinel.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "sentinel.serviceAccountName" -}}
+{{- define "zentinel.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "sentinel.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "zentinel.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
@@ -62,10 +62,10 @@ Create the name of the service account to use
 {{/*
 Create the name of the ConfigMap containing the configuration
 */}}
-{{- define "sentinel.configMapName" -}}
+{{- define "zentinel.configMapName" -}}
 {{- if .Values.config.existingConfigMap }}
 {{- .Values.config.existingConfigMap }}
 {{- else }}
-{{- include "sentinel.fullname" . }}
+{{- include "zentinel.fullname" . }}
 {{- end }}
 {{- end }}

@@ -3,8 +3,8 @@ name: zentinel
 description: A high-performance, security-focused reverse proxy built on Cloudflare's Pingora
 
 type: application
-version: 0.1.0
-appVersion: "0.2.0"
+version: 0.1.1
+appVersion: "26.08_1"
 
 home: https://zentinelproxy.io
 sources:

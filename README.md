@@ -2,27 +2,34 @@
 
 Helm chart for deploying [Zentinel](https://github.com/zentinelproxy/zentinel) - a high-performance, security-focused reverse proxy built on Cloudflare's Pingora.
 
+> **The chart repository is not live yet.** `https://charts.zentinelproxy.io`
+> does not resolve — there is no DNS record, no `gh-pages` branch and no chart
+> release automation in this repo. `helm repo add` will fail. Install from a
+> clone until that changes.
+
 ## Quick Start
-
-```bash
-# Add the repository (when published)
-helm repo add zentinel https://charts.zentinelproxy.io
-helm repo update
-
-# Install with default values
-helm install zentinel zentinel/zentinel
-
-# Install with custom configuration
-helm install zentinel zentinel/zentinel -f values.yaml
-```
-
-## Installation from Source
 
 ```bash
 git clone https://github.com/zentinelproxy/zentinel-helm.git
 cd zentinel-helm
+
+# Install with default values
 helm install zentinel .
+
+# Install with custom configuration
+helm install zentinel . -f my-values.yaml
 ```
+
+Or install a specific version straight from a tarball of this repository:
+
+```bash
+helm install zentinel \
+  https://github.com/zentinelproxy/zentinel-helm/archive/refs/heads/main.tar.gz
+```
+
+The chart deploys `ghcr.io/zentinelproxy/zentinel` at the tag matching the
+chart's `appVersion`. Override it with `--set image.tag=<tag>` — published tags
+use Zentinel's CalVer scheme (for example `26.08_1`), plus `latest`.
 
 ## Configuration
 
